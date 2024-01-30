@@ -1,10 +1,42 @@
 import 'package:attendenceapp/screens/batch_details.dart';
+import 'package:attendenceapp/services/firestore_service.dart';
 import 'package:attendenceapp/widgets/bottom_cornner.dart';
+import 'package:attendenceapp/widgets/textfield_widget.dart';
 import 'package:attendenceapp/widgets/top_cornner.dart';
 import 'package:flutter/material.dart';
 
-class EditbatchScreen extends StatelessWidget {
-  const EditbatchScreen({super.key});
+class EditbatchScreen extends StatefulWidget {
+  EditbatchScreen(
+      {super.key,
+      required this.idss,
+      required this.batchname,
+      required this.location,
+      required this.batchleader,
+      required this.mobile});
+  final String idss;
+  final String batchname;
+  final String location;
+  final String batchleader;
+  final String mobile;
+
+  @override
+  State<EditbatchScreen> createState() => _EditbatchScreenState();
+}
+
+class _EditbatchScreenState extends State<EditbatchScreen> {
+  TextEditingController batchnameController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController batchleaderController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    batchnameController.text = widget.batchname;
+    locationController.text = widget.location;
+    batchleaderController.text = widget.batchleader;
+    mobileController.text = widget.mobile;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +48,9 @@ class EditbatchScreen extends StatelessWidget {
               children: [
                 CornnerImage(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 150),
+                  padding: const EdgeInsets.only(
+                    top: 150,
+                  ),
                   child: Container(
                     width: 390,
                     height: 26,
@@ -42,12 +76,10 @@ class EditbatchScreen extends StatelessWidget {
                         fontSize: 18,
                         color: Color.fromRGBO(0, 0, 0, 0.8)),
                   ),
-                  Text(
-                    '  BCK90',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Color.fromRGBO(0, 0, 0, 0.8)),
+                  SizedBox(
+                    width: 250,
+                    child: Textwidget(
+                        text: '', textEditingController: batchnameController),
                   )
                 ],
               ),
@@ -63,12 +95,10 @@ class EditbatchScreen extends StatelessWidget {
                         fontSize: 18,
                         color: Color.fromRGBO(0, 0, 0, 0.8)),
                   ),
-                  Text(
-                    '  kinfra, Kakkachery',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Color.fromRGBO(0, 0, 0, 0.8)),
+                  SizedBox(
+                    width: 250,
+                    child: Textwidget(
+                        text: '', textEditingController: locationController),
                   )
                 ],
               ),
@@ -96,12 +126,10 @@ class EditbatchScreen extends StatelessWidget {
                         fontSize: 18,
                         color: Color.fromRGBO(0, 0, 0, 0.8)),
                   ),
-                  Text(
-                    '  Vismaya',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Color.fromRGBO(0, 0, 0, 0.8)),
+                  SizedBox(
+                    width: 250,
+                    child: Textwidget(
+                        text: '', textEditingController: batchleaderController),
                   )
                 ],
               ),
@@ -117,22 +145,30 @@ class EditbatchScreen extends StatelessWidget {
                         fontSize: 18,
                         color: Color.fromRGBO(0, 0, 0, 0.8)),
                   ),
-                  Text(
-                    '  9400500284',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Color.fromRGBO(0, 0, 0, 0.8)),
-                  )
+                  SizedBox(
+                      width: 250,
+                      child: Textwidget(
+                          text: '', textEditingController: mobileController))
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 50),
               child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    try {
+                      await FirestoreService().updates(
+                          docId: widget.idss,
+                          batchname: batchnameController.text,
+                          location: locationController.text,
+                          leadername: batchleaderController.text,
+                          leadermobile: mobileController.text);
+                    } catch (e) {}
+
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => BatchdetailScreen(),
+                      builder: (context) => BatchdetailScreen(
+                        ids: widget.idss,
+                      ),
                     ));
                   },
                   child: Container(

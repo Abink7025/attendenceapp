@@ -1,7 +1,6 @@
-import 'package:attendenceapp/firebase_options.dart';
-import 'package:attendenceapp/screens/new.dart';
+
 import 'package:attendenceapp/screens/splash_screen.dart';
-import 'package:attendenceapp/widgets/batch_widget.dart';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -60,16 +59,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: connectivityResult == null ||
-                connectivityResult == ConnectivityResult.none
-            ? Scaffold(
-                body: Center(
-                  child: Text('no internet'),
-                ),
-              )
-            : SplashScreen(),
-            // : NewScreen(),
-            );
+      debugShowCheckedModeBanner: false,
+      home: connectivityResult == null ||
+              connectivityResult == ConnectivityResult.none
+          ? Scaffold(
+              body: Center(
+                child: Text('no internet'),
+              ),
+            )
+          : SplashScreen()
+    );
   }
 }

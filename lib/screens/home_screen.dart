@@ -1,8 +1,9 @@
 import 'package:attendenceapp/screens/addbatch_screen.dart';
 import 'package:attendenceapp/screens/batch_details.dart';
+
 import 'package:attendenceapp/widgets/batch_widget.dart';
 import 'package:attendenceapp/widgets/bottom_cornner.dart';
-import 'package:attendenceapp/widgets/search_widget.dart';
+
 import 'package:attendenceapp/widgets/top_cornner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -54,13 +55,25 @@ class _HomeScreenState extends State<HomeScreen> {
               future: FirebaseFirestore.instance.collection('batch').get(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  // <3> Retrieve `List<DocumentSnapshot>` from snapshot
+                  
                   final List<DocumentSnapshot> documents = snapshot.data!.docs;
+                  print(documents);
 
                   return ListView.builder(
                     itemCount: documents.length,
                     itemBuilder: (context, index) => BatchWidget(
-                        text: documents[index]['Batchname'].toString()),
+                        text: documents[index]['Batchname'].toString(), id: documents[index].id, onPressed:  () async {
+              var a = await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BatchdetailScreen(
+                  ids:  documents[index].id,
+                ),
+              ));
+              if (a == true) {
+                setState(() {
+                  print('vhjafbhjfbbshjbhjbfjs');
+                });
+              }
+            },),
                   );
                 } else if (snapshot.hasError) {
                   return Text('Its Error!');
@@ -99,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Positioned(
-                  right: 19,
+                  right: 0,
                   bottom: 10,
                   child:
                       Container(width: 80, height: 84, child: BottomCornner()))

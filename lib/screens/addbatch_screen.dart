@@ -98,9 +98,8 @@ class _AddbatchScreenState extends State<AddbatchScreen> {
                         numberofstudent: _numberStudentController.text,
                         leadername: _leaderNameController.text,
                         leadermobile: _leaderMobilenumberController.text);
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ));
+                    Navigator.pop(context);
+                    
                   } catch (e) {
                     rethrow;
                   }
